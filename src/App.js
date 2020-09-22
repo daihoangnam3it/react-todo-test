@@ -8,30 +8,67 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [{ id: 1, title: 'Wake up' }],
+      items: [],
       id: uuidv4(),
       item: '',
       editItem: false,
     };
   }
-  handleChange = (e) => {
-    console.log('handleChange');
+  handleChange = e => {
+    // console.log(e.target.value)
+    this.setState({
+      item:e.target.value
+    })
+
   };
   handleSubmit = (e) => {
-    console.log('handle-SUBMIT');
+    e.preventDefault();
+    var newItem={
+      id:this.state.id,
+      title:this.state.item
+    }
+    this.setState({
+      items:[...this.state.items,newItem],
+      item:'',
+      id:uuidv4(),
+      editItem:false
+    })
+
   };
   clearList = () => {
-    console.log('clear list');
+    this.setState({
+      items: [],
+      id: uuidv4(),
+      item: '',
+      editItem: false,
+    })
   };
-  handleDelete = (id) => {
-    console.log('delete' + id);
+  handleDelete = id => {
+    const newItems=this.state.items.filter(item=>item.id!==id);
+    console.log(newItems);
+    this.setState({
+      items: newItems,
+      id: uuidv4(),
+      item: '',
+      editItem: false,
+    })
+    
   };
   handleEdit = (id) => {
-    console.log('Edit' + id);
+    const newItems=this.state.items.filter(item=>item.id!==id);
+    const selected=this.state.items.find(item=>item.id==id);
+    this.setState({
+      items: newItems,
+      id: id,
+      item: selected.title,
+      editItem: true,
+    })
+
   };
 
   render() {
-    console.log(this.state);
+    
+
     return (
       <div className='container'>
         <div className='row'>
@@ -41,12 +78,13 @@ class App extends React.Component {
               handleSubmit={this.handleSubmit} 
               item={this.state.item}
               handleChange={this.handleChange}
-              handleEdit={this.state.editItem}
+              editItem={this.state.editItem}
               />
             <TodoList 
               items={this.state.items}
               handleDelete={this.handleDelete}
               clearList={this.clearList}
+              handleEdit={this.handleEdit}
             />
           </div>
         </div>
