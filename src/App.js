@@ -56,7 +56,7 @@ class App extends React.Component {
   };
   handleEdit = (id) => {
     const newItems=this.state.items.filter(item=>item.id!==id);
-    const selected=this.state.items.find(item=>item.id==id);
+    const selected=this.state.items.find(item=>item.id===id);
     this.setState({
       items: newItems,
       id: id,
